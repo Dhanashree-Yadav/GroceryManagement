@@ -1,5 +1,8 @@
 package com.springboot.practice.serviceImpl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +11,11 @@ import org.springframework.stereotype.Service;
 import com.springboot.practice.model.CategoryModel;
 import com.springboot.practice.repository.CategoryRepository;
 import com.springboot.practice.request.CategoryRequest;
+import com.springboot.practice.response.CategoryListResponse;
 import com.springboot.practice.response.CategoryResponse;
 import com.springboot.practice.response.ErrorResponse;
 import com.springboot.practice.service.CategoryService;
+import com.springboot.practice.view.CategoryView;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -20,6 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	private static final Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
+	@Override
 	public CategoryResponse saveCategory(CategoryRequest request) {
 		CategoryResponse response = new CategoryResponse();
 
@@ -67,4 +73,14 @@ public class CategoryServiceImpl implements CategoryService {
 		return response;
 
 	}
+
+	@Override
+	public CategoryListResponse getcategoryDetails() {
+		List<CategoryView> views = cRepository.findAll().stream()
+				.map(cResponse -> new CategoryView(cResponse.getCcode(), cResponse.getCname(), cResponse.getCdesc()))
+
+				.collect(Collectors.toList());
+		return new CategoryListResponse(views);
+	}
+
 }
