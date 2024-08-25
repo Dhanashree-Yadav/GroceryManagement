@@ -30,4 +30,9 @@ public class CategoryController {
 
 	}
 	
+	
+	public ResponseEntity<?> getcategoryDetails(){
+		return null;
+	}
+	
 }
